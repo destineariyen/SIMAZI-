@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIMAZI - Sistem Informasi Manajemen Asuhan Gizi</title>
+  <style>
+    :root {
+      --blue: #0b6fc6;
+      --blue-dark: #074f8f;
+      --blue-soft: #e8f3ff;
+      --green: #22a06b;
+      --green-soft: #e9f8f1;
+      --white: #ffffff;
+      --gray: #f5f7fb;
+      --text: #1f2937;
+      --muted: #64748b;
+      --border: #dbe4ef;
+      --warning: #f59e0b;
+      --danger: #dc2626;
+      --radius: 18px;
+      --shadow: 0 14px 30px rgba(15, 23, 42, 0.09);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, #eef7ff, #ffffff 45%, #effaf5);
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    .app-shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+    }
+
+    aside {
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      padding: 24px 18px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      color: white;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .brand h1 { margin: 0; font-size: 22px; color: var(--blue-dark); }
+    .brand p { margin: 3px 0 0; font-size: 12px; color: var(--muted); }
+
+    .role-card {
+      background: var(--blue-soft);
+      border: 1px solid #cce5ff;
+      padding: 14px;
+      border-radius: var(--radius);
+      margin-bottom: 18px;
+    }
+
+    .role-card label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--blue-dark);
+      margin-bottom: 8px;
+    }
+
+    select, input, textarea {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
+      background: var(--white);
+      outline: none;
+    }
+
+    textarea { min-height: 92px; resize: vertical; }
+    input:focus, select:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(11, 111, 198, .12); }
+
+    nav { display: grid; gap: 8px; }
+
+    .nav-btn {
+      border: 0;
+      padding: 12px 13px;
+      text-align: left;
+      border-radius: 14px;
+      color: var(--text);
+      background: transparent;
+      cursor: pointer;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      color: white;
+    }
+
+    main { padding: 28px; overflow: hidden; }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      color: white;
+      padding: 28px;
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      right: -60px;
+      top: -60px;
+    }
+
+    .hero h2 { margin: 0 0 8px; font-size: 30px; }
+    .hero p { margin: 0; max-width: 760px; line-height: 1.6; }
+
+    .quick-actions, .grid, .stats-grid { display: grid; gap: 16px; }
+    .stats-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 20px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 { margin: 0 0 12px; color: var(--blue-dark); }
+    .card p { color: var(--muted); line-height: 1.6; }
+
+    .stat {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 18px;
+      border: 1px solid var(--border);
+    }
+
+    .stat span { color: var(--muted); font-size: 13px; }
+    .stat strong { display: block; font-size: 28px; margin-top: 6px; color: var(--blue-dark); }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 7px;
+      font-size: 13px;
+    }
+
+    .full { grid-column: 1 / -1; }
+
+    .btn {
+      border: none;
+      padding: 12px 16px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 800;
+      background: var(--blue);
+      color: white;
+      transition: .2s;
+    }
+
+    .btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .btn.green { background: var(--green); }
+    .btn.light { background: var(--blue-soft); color: var(--blue-dark); }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: #087443;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .section { display: none; }
+    .section.active { display: block; }
+
+    .result-box {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      background: var(--green-soft);
+      border: 1px solid #bcebd6;
+      line-height: 1.7;
+    }
+
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+
+    th, td {
+      padding: 13px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th { color: var(--blue-dark); background: var(--blue-soft); }
+
+    .chat-box {
+      height: 310px;
+      overflow-y: auto;
+      background: var(--gray);
+      border-radius: 16px;
+      padding: 15px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .message {
+      max-width: 78%;
+      padding: 12px 14px;
+      border-radius: 16px;
+      line-height: 1.5;
+    }
+
+    .message.ag { background: var(--blue); color: white; justify-self: start; }
+    .message.patient { background: var(--green); color: white; justify-self: end; }
+
+    .mobile-menu { display: none; }
+
+    .auth-screen {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: linear-gradient(135deg, #e7f3ff, #ffffff 45%, #e8f8f0);
+    }
+
+    .auth-card {
+      width: min(1050px, 100%);
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .auth-left {
+      padding: 42px;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-left::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      right: -70px;
+      bottom: -70px;
+    }
+
+    .auth-brand h1, .auth-brand p { color: white; }
+    .auth-left h2 { font-size: 34px; margin: 42px 0 12px; }
+    .auth-left p { line-height: 1.7; max-width: 520px; }
+
+    .auth-benefits {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-benefits span {
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.25);
+      padding: 12px;
+      border-radius: 14px;
+      font-weight: 700;
+    }
+
+    .auth-right { padding: 34px; }
+
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--gray);
+      padding: 6px;
+      border-radius: 16px;
+      margin-bottom: 22px;
+    }
+
+    .auth-tab {
+      border: 0;
+      background: transparent;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .auth-tab.active {
+      color: white;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+    }
+
+    .auth-form { display: none; gap: 14px; }
+    .auth-form.active { display: grid; }
+    .auth-form h3 { margin: 0 0 6px; color: var(--blue-dark); font-size: 24px; }
+    .auth-note { font-size: 13px; color: var(--muted); margin: 0; }
+
+    @media (max-width: 980px) {
+      .auth-card { grid-template-columns: 1fr; }
+      .auth-left, .auth-right { padding: 26px; }
+      .auth-benefits { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 980px) {
+      .app-shell { grid-template-columns: 1fr; }
+      aside { position: static; height: auto; }
+      main { padding: 18px; }
+      .stats-grid, .grid.two, .grid.three, .form-grid { grid-template-columns: 1fr; }
+      .mobile-menu { display: inline-flex; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-card">
+      <div class="auth-left">
+        <div class="brand auth-brand">
+          <div class="logo">S</div>
+          <div>
+            <h1>SIMAZI</h1>
+            <p>Sistem Informasi Manajemen Asuhan Gizi</p>
+          </div>
+        </div>
+        <h2>Masuk ke layanan asuhan gizi digital</h2>
+        <p>Gunakan SIMAZI sesuai peran Anda sebagai pasien atau ahli gizi. Setelah login, menu dan tampilan akan menyesuaikan kebutuhan pengguna.</p>
+        <div class="auth-benefits">
+          <span>✓ Monitoring gizi</span>
+          <span>✓ Chat pasien & ahli gizi</span>
+          <span>✓ Laporan makan harian</span>
+          <span>✓ Intervensi diet personal</span>
+        </div>
+      </div>
+
+      <div class="auth-right">
+        <div class="auth-tabs">
+          <button id="loginTab" class="auth-tab active" onclick="switchAuth('login')">Login</button>
+          <button id="registerTab" class="auth-tab" onclick="switchAuth('register')">Register</button>
+        </div>
+
+        <form id="loginForm" class="auth-form active" onsubmit="handleLogin(event)">
+          <h3>Login SIMAZI</h3>
+          <div class="form-group"><label>Login sebagai</label><select id="loginRole"><option value="ag">Ahli Gizi</option><option value="pasien">Pasien</option></select></div>
+          <div class="form-group"><label>Email / Nomor HP</label><input id="loginIdentity" required placeholder="Masukkan email atau nomor HP" /></div>
+          <div class="form-group"><label>Password</label><input required type="password" placeholder="Masukkan password" /></div>
+          <button class="btn green" type="submit">Masuk</button>
+          <p class="auth-note">Demo: isi data apa saja untuk masuk ke prototipe.</p>
+        </form>
+
+        <form id="registerForm" class="auth-form" onsubmit="handleRegister(event)">
+          <h3>Register SIMAZI</h3>
+          <div class="form-group"><label>Daftar sebagai</label><select id="registerRole"><option value="pasien">Pasien</option><option value="ag">Ahli Gizi</option></select></div>
+          <div class="form-group"><label>Nama Lengkap</label><input id="registerName" required placeholder="Contoh: Siti Aminah" /></div>
+          <div class="form-group"><label>Email / Nomor HP</label><input required placeholder="email atau nomor WhatsApp" /></div>
+          <div class="form-group"><label>Password</label><input required type="password" placeholder="Buat password" /></div>
+          <button class="btn" type="submit">Daftar Sekarang</button>
+          <p class="auth-note">Setelah register, Anda langsung masuk sesuai role yang dipilih.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-shell" id="appShell" style="display:none;">
+    <aside>
+      <div class="brand">
+        <div class="logo">S</div>
+        <div>
+          <h1>SIMAZI</h1>
+          <p>Sistem Informasi Manajemen Asuhan Gizi</p>
+        </div>
+      </div>
+
+      <div class="role-card">
+        <label for="roleSelect">Role aktif</label>
+        <select id="roleSelect" onchange="updateRoleView()">
+          <option value="ag">Ahli Gizi</option>
+          <option value="pasien">Pasien</option>
+        </select>
+        <button class="btn light" style="width:100%; margin-top:10px;" onclick="logout()">Keluar</button>
+      </div>
+
+      <nav>
+        <button class="nav-btn active" onclick="showSection('dashboard', this)">🏠 Dasbor</button>
+        <button class="nav-btn" onclick="showSection('registrasi', this)">👤 Profil</button>
+        <button class="nav-btn" onclick="showSection('assessment', this)">📋 Assessment Gizi</button>
+        <button class="nav-btn" onclick="showSection('diagnosis', this)">🧾 Diagnosis Gizi</button>
+        <button class="nav-btn" onclick="showSection('intervensi', this)">🥗 Intervensi Gizi</button>
+        <button class="nav-btn" onclick="showSection('monitoring', this)">📈 Monitoring</button>
+        <button class="nav-btn" onclick="showSection('rujukan', this)">🏥 Rujukan Pasien</button>
+        <button class="nav-btn" onclick="showSection('chat', this)">💬 Chat</button>
+        <button class="nav-btn" onclick="showSection('mandiri', this)">🌿 Gizi Mandiri</button>
+        <button class="nav-btn" onclick="showSection('analitik', this)">📊 Analisis Pengguna</button>
+        <button class="nav-btn" onclick="showSection('testimoni', this)">⭐ Testimoni</button>
+      </nav>
+    </aside>
+
+    <main>
+      <div class="topbar">
+        <div>
+          <span class="badge" id="roleBadge">Mode Ahli Gizi</span>
+          <h2 id="pageTitle" style="margin:10px 0 0;">Dasbor SIMAZI</h2>
+        </div>
+        <button class="btn light" onclick="alert('Notifikasi aktif: pengingat makan, pencatatan asupan, dan obat/suplemen.')">🔔 Cek Notifikasi</button>
+      </div>
+
+      <section id="dashboard" class="section active">
+        <div id="dashboardAG" class="role-dashboard">
+          <div class="hero">
+            <h2>Dasbor Ahli Gizi</h2>
+            <p>Fungsi inti ahli gizi: mengelola asuhan gizi pasien, menganalisis data klinis, membuat diagnosis gizi, menyusun intervensi, memantau perkembangan, melakukan rujukan, dan berkomunikasi dengan pasien.</p>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat"><span>Total Pasien Binaan</span><strong>128</strong></div>
+            <div class="stat"><span>Assessment Perlu Review</span><strong>24</strong></div>
+            <div class="stat"><span>Laporan Makan Hari Ini</span><strong>76</strong></div>
+            <div class="stat"><span>Rujukan Aktif</span><strong>12</strong></div>
+          </div>
+
+          <div class="grid three">
+            <div class="card"><h3>1. Kelola Assessment</h3><p>Ahli gizi menginput dan menganalisis antropometri, biokimia, fisik klinis, kebiasaan makan, recall 24 jam, alergi/pantangan, dan riwayat penyakit.</p><button class="btn" onclick="showSection('assessment', document.querySelectorAll('.nav-btn')[2])">Buka Assessment</button></div>
+            <div class="card"><h3>2. Diagnosis & Intervensi</h3><p>Ahli gizi menetapkan masalah gizi, menghitung kebutuhan energi/zat gizi, lalu menyusun pembagian makan serta makanan boleh dan tidak boleh.</p><button class="btn green" onclick="showSection('diagnosis', document.querySelectorAll('.nav-btn')[3])">Buka Diagnosis</button></div>
+            <div class="card"><h3>3. Monitoring & Edukasi</h3><p>Ahli gizi memantau BB, data lab, fisik klinis, kepatuhan makan, memberi catatan, motivasi, rekomendasi, dan edukasi pasien.</p><button class="btn" onclick="showSection('monitoring', document.querySelectorAll('.nav-btn')[5])">Buka Monitoring</button></div>
+          </div>
+
+          <div class="card" style="margin-top:16px;">
+            <h3>Ringkasan Pasien Prioritas</h3>
+            <div class="table-wrap">
+              <table>
+                <tr><th>Pasien</th><th>Penyakit</th><th>Masalah Utama</th><th>Tindak Lanjut</th></tr>
+                <tr><td>Budi</td><td>Ginjal</td><td>Kreatinin tinggi, edema ringan</td><td>Evaluasi natrium, cairan, dan protein</td></tr>
+                <tr><td>Siti</td><td>Asam Urat</td><td>Nyeri sendi, asupan purin tinggi</td><td>Batasi jeroan, kaldu pekat, dan seafood tertentu</td></tr>
+                <tr><td>Andi</td><td>Hipertensi</td><td>Asupan garam tinggi</td><td>Edukasi diet rendah garam dan pantau tekanan darah</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="dashboardPasien" class="role-dashboard" style="display:none;">
+          <div class="hero">
+            <h2>Dasbor Pasien</h2>
+            <p>Fungsi inti pasien: mencatat makanan harian, melaporkan berat badan, membaca anjuran diet, menerima pengingat, menjawab pertanyaan ahli gizi, dan memantau perkembangan pribadi.</p>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat"><span>Status Gizi</span><strong>Normal</strong></div>
+            <div class="stat"><span>Kepatuhan Makan</span><strong>82%</strong></div>
+            <div class="stat"><span>BB Terakhir</span><strong>60 kg</strong></div>
+            <div class="stat"><span>Catatan AG</span><strong>3</strong></div>
+          </div>
+
+          <div class="grid three">
+            <div class="card"><h3>1. Catat Makan & BB</h3><p>Pasien mengisi tanggal, makanan yang dikonsumsi sehari-hari, berat badan, serta menerima apresiasi atau motivasi setelah laporan dikirim.</p><button class="btn green" onclick="showSection('monitoring', document.querySelectorAll('.nav-btn')[5])">Isi Laporan</button></div>
+            <div class="card"><h3>2. Ikuti Anjuran Diet</h3><p>Pasien melihat pembagian makan sehari, makanan yang boleh, makanan yang dibatasi, serta anjuran sesuai ginjal, hipertensi, atau asam urat.</p><button class="btn" onclick="showSection('intervensi', document.querySelectorAll('.nav-btn')[4])">Lihat Anjuran</button></div>
+            <div class="card"><h3>3. Konsultasi & Jawab AG</h3><p>Pasien menjawab pertanyaan ahli gizi, bertanya tentang makanan, melaporkan kendala, dan menerima catatan atau rekomendasi personal.</p><button class="btn green" onclick="showSection('chat', document.querySelectorAll('.nav-btn')[7])">Buka Chat</button></div>
+          </div>
+
+          <div class="card" style="margin-top:16px;">
+            <h3>Rencana Hari Ini</h3>
+            <div class="table-wrap">
+              <table>
+                <tr><th>Waktu</th><th>Kegiatan</th><th>Status</th></tr>
+                <tr><td>Pagi</td><td>Sarapan dan minum obat/suplemen bila ada</td><td>Belum dicatat</td></tr>
+                <tr><td>Siang</td><td>Catat makan siang dan minum air sesuai anjuran</td><td>Belum dicatat</td></tr>
+                <tr><td>Malam</td><td>Catat makan malam dan timbang BB bila terjadwal</td><td>Belum dicatat</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="registrasi" class="section">
+        <div id="profilAG" class="role-profile">
+          <div class="card">
+            <h3>Profil Ahli Gizi</h3>
+            <p>Bagian ini khusus untuk data profesional ahli gizi. Data penyakit, alergi, dan riwayat kesehatan tidak ditampilkan karena itu termasuk data pasien.</p>
+            <div class="form-grid">
+              <div class="form-group"><label>Role Pengguna</label><select disabled><option>Ahli Gizi</option></select></div>
+              <div class="form-group"><label>Nama Lengkap Ahli Gizi</label><input placeholder="Contoh: Ns. Rina, S.Gz., RD" /></div>
+              <div class="form-group"><label>Email / Nomor HP</label><input placeholder="email atau nomor WhatsApp" /></div>
+              <div class="form-group"><label>Nomor STR / SIP</label><input placeholder="Nomor registrasi profesi" /></div>
+              <div class="form-group"><label>Tempat Praktik / Fasilitas Layanan</label><input placeholder="RS / Puskesmas / Klinik / Praktik Mandiri" /></div>
+              <div class="form-group"><label>Spesialisasi Layanan</label><select><option>Gizi Klinik</option><option>Ginjal</option><option>Hipertensi</option><option>Asam Urat</option><option>Manajemen Berat Badan</option></select></div>
+              <div class="form-group full"><label>Alamat Praktik</label><textarea placeholder="Alamat fasilitas layanan atau praktik mandiri"></textarea></div>
+              <div class="form-group full"><label>Catatan Profesional</label><textarea placeholder="Contoh: jadwal praktik, pengalaman layanan, atau fokus edukasi gizi"></textarea></div>
+              <div class="full"><button class="btn green">Simpan Profil Ahli Gizi</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="profilPasien" class="role-profile" style="display:none;">
+          <div class="card">
+            <h3>Profil Pasien</h3>
+            <p>Bagian ini khusus untuk identitas pasien dan data kesehatan dasar yang dibutuhkan dalam asuhan gizi.</p>
+            <div class="form-grid">
+              <div class="form-group"><label>Role Pengguna</label><select disabled><option>Pasien</option></select></div>
+              <div class="form-group"><label>Nama Lengkap Pasien</label><input placeholder="Contoh: Siti Aminah" /></div>
+              <div class="form-group"><label>Email / Nomor HP</label><input placeholder="email atau nomor WhatsApp" /></div>
+              <div class="form-group"><label>Usia</label><input type="number" placeholder="tahun" /></div>
+              <div class="form-group"><label>Jenis Kelamin</label><select><option>Perempuan</option><option>Laki-laki</option></select></div>
+              <div class="form-group"><label>Penyakit Utama</label><select><option>Ginjal</option><option>Hipertensi</option><option>Asam Urat</option><option>Sehat Mandiri</option></select></div>
+              <div class="form-group"><label>Ahli Gizi Pendamping</label><input placeholder="Nama ahli gizi yang menangani" /></div>
+              <div class="form-group"><label>Fasilitas Layanan</label><input placeholder="RS / Puskesmas / Klinik / Mandiri" /></div>
+              <div class="form-group full"><label>Alergi / Pantangan Makan</label><textarea placeholder="Contoh: seafood, susu, makanan tinggi garam, jeroan"></textarea></div>
+              <div class="form-group full"><label>Riwayat Penyakit Singkat</label><textarea placeholder="Contoh: hipertensi 3 tahun, penyakit ginjal, asam urat, atau kondisi lain"></textarea></div>
+              <div class="form-group full"><label>Alamat Pasien</label><textarea placeholder="Alamat tempat tinggal pasien"></textarea></div>
+              <div class="full"><button class="btn green">Simpan Profil Pasien</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="assessment" class="section">
+        <div class="grid two">
+          <div class="card">
+            <h3>Assessment Antropometri</h3>
+            <div class="form-grid">
+              <div class="form-group"><label>Berat Badan (kg)</label><input id="bb" type="number" value="60" /></div>
+              <div class="form-group"><label>Tinggi Badan (cm)</label><input id="tb" type="number" value="160" /></div>
+              <div class="form-group"><label>Lingkar Lengan / Data Tambahan</label><input placeholder="opsional" /></div>
+              <div class="form-group"><label>Berat Badan Estimasi</label><input placeholder="opsional" /></div>
+              <div class="full"><button class="btn" onclick="hitungIMT()">Analisis Status Gizi</button></div>
+            </div>
+            <div id="imtResult" class="result-box">Masukkan BB dan TB, lalu klik analisis.</div>
+          </div>
+
+          <div class="card">
+            <h3>Assessment Biokimia & Fisik Klinis</h3>
+            <div class="form-grid">
+              <div class="form-group"><label>Ureum</label><input placeholder="mg/dL" /></div>
+              <div class="form-group"><label>Kreatinin</label><input placeholder="mg/dL" /></div>
+              <div class="form-group"><label>Kalium</label><input placeholder="mmol/L" /></div>
+              <div class="form-group"><label>Natrium</label><input placeholder="mmol/L" /></div>
+              <div class="form-group full"><label>Diagnosis Medis / Pemeriksaan Penunjang</label><textarea placeholder="Diisi oleh ahli gizi berdasarkan hasil pemeriksaan"></textarea></div>
+              <div class="full"><button class="btn green" onclick="alert('Data bermasalah ditandai untuk dianalisis ahli gizi.')">Analisis Data Lab & Fisik</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+          <h3>Kebiasaan Makan, Recall 24 Jam, dan Riwayat Penyakit</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Frekuensi Makan</label><input placeholder="Contoh: 3x makan utama, 2x selingan" /></div>
+            <div class="form-group"><label>Makanan Kesukaan</label><input placeholder="Contoh: ikan, ayam, sayur bening" /></div>
+            <div class="form-group"><label>Alergi / Pantangan</label><input placeholder="Contoh: seafood, susu, tinggi garam" /></div>
+            <div class="form-group"><label>Riwayat Penyakit</label><input placeholder="Contoh: CKD, hipertensi, gout" /></div>
+            <div class="form-group full"><label>Recall Makan 24 Jam</label><textarea placeholder="Pagi, siang, malam, selingan, minuman, jumlah porsi"></textarea></div>
+            <div class="full"><button class="btn">Analisis Tingkat Konsumsi</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="diagnosis" class="section">
+        <div class="card">
+          <h3>Modul Diagnosis Masalah Gizi</h3>
+          <p>Kumpulan masalah dari assessment akan diringkas, lalu ahli gizi memilih atau menulis diagnosis gizi.</p>
+          <div class="form-grid">
+            <div class="form-group full"><label>Masalah yang Ditemukan</label><textarea>IMT overweight; asupan natrium tinggi; konsumsi sayur rendah; kreatinin meningkat.</textarea></div>
+            <div class="form-group full"><label>Diagnosis Gizi oleh Ahli Gizi</label><textarea placeholder="Contoh: Asupan natrium berlebih berkaitan dengan kebiasaan konsumsi makanan asin..."></textarea></div>
+            <div class="full"><button class="btn green">Simpan Diagnosis</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="intervensi" class="section">
+        <div class="grid two">
+          <div class="card">
+            <h3>Analisis Kebutuhan Energi & Zat Gizi</h3>
+            <div class="form-grid">
+              <div class="form-group"><label>Berat Badan Acuan (kg)</label><input id="bbAcuan" type="number" value="60" /></div>
+              <div class="form-group"><label>Kondisi</label><select id="kondisi"><option value="ginjal">Ginjal</option><option value="hipertensi">Hipertensi</option><option value="asamurat">Asam Urat</option></select></div>
+              <div class="full"><button class="btn" onclick="hitungKebutuhan()">Hitung Otomatis</button></div>
+            </div>
+            <div id="giziResult" class="result-box">Klik hitung untuk melihat kalori, protein, kalium, natrium, fosfor, dan cairan.</div>
+          </div>
+
+          <div class="card">
+            <h3>Pembagian Makan & Leaflet Diet</h3>
+            <p><b>Pembagian makan sehari:</b> makan pagi 25%, selingan pagi 10%, makan siang 30%, selingan sore 10%, makan malam 25%.</p>
+            <div class="table-wrap">
+              <table>
+                <tr><th>Boleh</th><th>Dibatasi / Tidak Boleh</th></tr>
+                <tr><td>Sayur sesuai kondisi, buah rendah kalium sesuai anjuran, lauk rendah lemak, air sesuai rekomendasi.</td><td>Makanan tinggi garam, jeroan, makanan ultra-proses, minuman manis, makanan tinggi purin untuk asam urat.</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="monitoring" class="section">
+        <div id="monitoringAG" class="role-monitoring">
+          <div class="card">
+            <h3>Dasbor Monitoring Ahli Gizi</h3>
+            <p>Ahli gizi memantau beberapa pasien binaan, termasuk BB, data laboratorium, fisik klinis, kepatuhan makan, dan catatan rekomendasi.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Pasien</th><th>BB</th><th>Lab</th><th>Fisik Klinis</th><th>Kepatuhan Makan</th><th>Catatan</th></tr></thead>
+                <tbody>
+                  <tr><td>Budi</td><td>Turun 1 kg</td><td>Kreatinin tinggi</td><td>Edema ringan</td><td>82%</td><td>Kurangi natrium dan pantau cairan.</td></tr>
+                  <tr><td>Siti</td><td>Stabil</td><td>Asam urat tinggi</td><td>Nyeri sendi</td><td>74%</td><td>Hindari jeroan dan kaldu pekat.</td></tr>
+                  <tr><td>Andi</td><td>Naik 0,5 kg</td><td>Natrium perlu dipantau</td><td>Tekanan darah tinggi</td><td>68%</td><td>Edukasi rendah garam dan evaluasi kebiasaan makan.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="grid two" style="margin-top:16px;">
+            <div class="card">
+              <h3>Review Laporan Makan Pasien</h3>
+              <p>Digunakan ahli gizi untuk melihat laporan makan pasien, menilai asupan, lalu memberikan apresiasi, motivasi, atau catatan perbaikan.</p>
+              <div class="table-wrap">
+                <table>
+                  <tr><th>Pasien</th><th>Laporan Terakhir</th><th>Evaluasi</th></tr>
+                  <tr><td>Budi</td><td>Nasi, telur, sayur bening</td><td>Baik, tetap batasi garam.</td></tr>
+                  <tr><td>Siti</td><td>Soto dengan kaldu pekat</td><td>Perlu edukasi pembatasan purin.</td></tr>
+                </table>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Laporan Lab, Fisik Klinis, Log & Pengingat</h3>
+              <p>Ahli gizi mencatat perkembangan lab, fisik klinis, riwayat asupan, laporan periodik, dan pengingat makan/obat/suplemen sesuai kebutuhan pasien.</p>
+              <button class="btn">Buat Laporan Periodik</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="monitoringPasien" class="role-monitoring" style="display:none;">
+          <div class="card">
+            <h3>Monitoring Pribadi Pasien</h3>
+            <p>Pasien hanya melihat dan mengisi data miliknya sendiri, tanpa menampilkan data pasien lain.</p>
+            <div class="stats-grid">
+              <div class="stat"><span>BB Terakhir</span><strong>60 kg</strong></div>
+              <div class="stat"><span>Kepatuhan Makan</span><strong>82%</strong></div>
+              <div class="stat"><span>Laporan Hari Ini</span><strong>Belum</strong></div>
+              <div class="stat"><span>Catatan AG</span><strong>3</strong></div>
+            </div>
+          </div>
+
+          <div class="grid two" style="margin-top:16px;">
+            <div class="card">
+              <h3>Laporan Makan Saya</h3>
+              <div class="form-grid">
+                <div class="form-group"><label>Tanggal</label><input type="date" /></div>
+                <div class="form-group"><label>Berat Badan Hari Ini</label><input placeholder="kg" /></div>
+                <div class="form-group full"><label>Makanan yang Dikonsumsi</label><textarea placeholder="Tuliskan makanan pagi, siang, malam, selingan, dan minuman"></textarea></div>
+                <div class="full"><button class="btn green" onclick="alert('Hebat! Terima kasih sudah mencatat. Pertahankan kepatuhan makan sehat hari ini.')">Kirim Laporan Saya</button></div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Perkembangan Saya</h3>
+              <div class="table-wrap">
+                <table>
+                  <tr><th>Tanggal</th><th>BB</th><th>Catatan Ahli Gizi</th></tr>
+                  <tr><td>Hari ini</td><td>60 kg</td><td>Batasi makanan asin dan catat jumlah minum.</td></tr>
+                  <tr><td>Kemarin</td><td>60,2 kg</td><td>Pilihan sarapan sudah baik.</td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="rujukan" class="section">
+        <div class="card">
+          <h3>Rujukan Pasien</h3>
+          <p>Memindahkan asuhan gizi dari ahli gizi rumah sakit ke puskesmas/mandiri atau sebaliknya.</p>
+          <div class="form-grid">
+            <div class="form-group"><label>Nama Pasien</label><input placeholder="Nama pasien" /></div>
+            <div class="form-group"><label>Dari Layanan</label><input placeholder="RS / Puskesmas / Mandiri" /></div>
+            <div class="form-group"><label>Ke Layanan</label><input placeholder="RS / Puskesmas / Mandiri" /></div>
+            <div class="form-group"><label>Ahli Gizi Tujuan</label><input placeholder="Nama ahli gizi" /></div>
+            <div class="form-group full"><label>Ringkasan Asuhan Gizi</label><textarea placeholder="Assessment, diagnosis, intervensi, monitoring terakhir"></textarea></div>
+            <div class="full"><button class="btn green">Kirim Rujukan</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="chat" class="section">
+        <div id="chatAG" class="role-chat">
+          <div class="card">
+            <h3>Chat Ahli Gizi ke Pasien</h3>
+            <p>Fungsi inti ahli gizi: menanyakan kondisi pasien, mengevaluasi laporan makan, memberi catatan, dan memotivasi pasien berdasarkan hasil monitoring.</p>
+            <div class="grid two" style="margin-bottom:16px;">
+              <div class="card" style="box-shadow:none;">
+                <h3>Daftar Pasien</h3>
+                <div class="table-wrap">
+                  <table>
+                    <tr><th>Pasien</th><th>Status</th><th>Aksi</th></tr>
+                    <tr><td>Budi</td><td>Belum lapor makan malam</td><td><button class="btn light" onclick="isiTemplateChat('Budi, mohon isi laporan makan malam dan berat badan hari ini ya.')">Ingatkan</button></td></tr>
+                    <tr><td>Siti</td><td>Asupan purin tinggi</td><td><button class="btn light" onclick="isiTemplateChat('Siti, hari ini coba hindari jeroan dan kaldu pekat ya. Bagaimana nyeri sendinya?')">Tanya kondisi</button></td></tr>
+                    <tr><td>Andi</td><td>Natrium tinggi</td><td><button class="btn light" onclick="isiTemplateChat('Andi, apakah hari ini masih mengonsumsi makanan asin atau instan?')">Evaluasi</button></td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="card" style="box-shadow:none;">
+                <h3>Fungsi Inti Ahli Gizi</h3>
+                <p>• Bertanya kondisi pasien<br>• Mengecek laporan makan dan BB<br>• Memberi rekomendasi diet<br>• Menulis catatan monitoring<br>• Mengarahkan pemeriksaan lab/fisik klinis bila perlu</p>
+              </div>
+            </div>
+            <div class="chat-box" id="chatBoxAG">
+              <div class="message ag">Halo Budi, apakah hari ini sudah menimbang berat badan dan mencatat makan pagi?</div>
+              <div class="message patient">Sudah Bu, BB saya 60 kg. Sarapan nasi sedikit, telur, dan sayur bening.</div>
+              <div class="message ag">Baik, terima kasih. Untuk siang nanti tetap batasi garam dan catat jumlah minum ya.</div>
+              <div class="message patient">Baik Bu, nanti saya isi laporan makan siang.</div>
+            </div>
+            <div style="display:flex; gap:10px; margin-top:14px;">
+              <input id="chatInputAG" placeholder="Tulis pertanyaan atau rekomendasi untuk pasien..." />
+              <button class="btn green" onclick="sendChatRole('ag')">Kirim ke Pasien</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="chatPasien" class="role-chat" style="display:none;">
+          <div class="card">
+            <h3>Chat Pasien ke Ahli Gizi</h3>
+            <p>Fungsi inti pasien: menjawab pertanyaan ahli gizi, melaporkan kendala makan, bertanya tentang makanan, serta mengirim perkembangan BB/lab/fisik klinis.</p>
+            <div class="grid two" style="margin-bottom:16px;">
+              <div class="card" style="box-shadow:none;">
+                <h3>Pertanyaan Cepat</h3>
+                <div class="quick-actions">
+                  <button class="btn light" onclick="isiTemplateChat('Apakah makanan ini boleh saya konsumsi hari ini?')">Tanya makanan</button>
+                  <button class="btn light" onclick="isiTemplateChat('Saya sudah mengisi laporan makan hari ini, mohon dicek.')">Minta dicek</button>
+                  <button class="btn light" onclick="isiTemplateChat('Berat badan saya hari ini berubah, apakah perlu penyesuaian diet?')">Lapor BB</button>
+                </div>
+              </div>
+              <div class="card" style="box-shadow:none;">
+                <h3>Fungsi Inti Pasien</h3>
+                <p>• Menjawab pertanyaan ahli gizi<br>• Melaporkan makan harian<br>• Menyampaikan keluhan/kendala<br>• Bertanya makanan boleh/tidak boleh<br>• Menerima motivasi dan arahan diet</p>
+              </div>
+            </div>
+            <div class="chat-box" id="chatBoxPasien">
+              <div class="message ag">Halo, bagaimana pencatatan makan hari ini? Apakah ada makanan asin atau makanan pantangan?</div>
+              <div class="message patient">Tadi siang saya makan agak asin, tapi malam ini saya akan pilih lauk rendah garam.</div>
+              <div class="message ag">Bagus sudah dicatat. Tolong isi laporan makan dan berat badan hari ini agar bisa saya evaluasi.</div>
+              <div class="message patient">Baik, saya akan isi sekarang.</div>
+            </div>
+            <div style="display:flex; gap:10px; margin-top:14px;">
+              <input id="chatInputPasien" placeholder="Tulis jawaban atau pertanyaan untuk ahli gizi..." />
+              <button class="btn green" onclick="sendChatRole('pasien')">Kirim ke Ahli Gizi</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="mandiri" class="section">
+        <div class="grid two">
+          <div class="card">
+            <h3>Klien Sehat Mandiri</h3>
+            <p>Hitung status gizi, analisis asupan, dan dapatkan anjuran gizi seimbang tanpa terhubung dengan ahli gizi.</p>
+            <button class="btn" onclick="showSection('assessment', document.querySelectorAll('.nav-btn')[2])">Mulai Hitung Status Gizi</button>
+          </div>
+          <div class="card">
+            <h3>Anjuran Makan Sehat</h3>
+            <p>Utamakan makanan beragam, cukup sayur dan buah, batasi gula-garam-lemak, minum air cukup, serta aktif bergerak.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="analitik" class="section">
+        <div class="stats-grid">
+          <div class="stat"><span>Jumlah AG</span><strong>18</strong></div>
+          <div class="stat"><span>Pasien Ginjal</span><strong>54</strong></div>
+          <div class="stat"><span>Pasien Hipertensi</span><strong>46</strong></div>
+          <div class="stat"><span>Pasien Asam Urat</span><strong>28</strong></div>
+        </div>
+        <div class="card">
+          <h3>Analisis Status Gizi Pasien</h3>
+          <div class="table-wrap">
+            <table>
+              <tr><th>Kategori</th><th>Jumlah</th><th>Rekomendasi Sistem</th></tr>
+              <tr><td>Kurus</td><td>12</td><td>Evaluasi asupan energi dan protein.</td></tr>
+              <tr><td>Normal</td><td>49</td><td>Pertahankan pola makan seimbang.</td></tr>
+              <tr><td>Overweight/Obesitas</td><td>67</td><td>Intervensi energi, aktivitas, dan monitoring BB.</td></tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="testimoni" class="section">
+        <div class="grid two">
+          <div class="card">
+            <h3>Testimoni Pengguna</h3>
+            <p>“SIMAZI membantu saya mencatat makan harian dan memahami makanan yang perlu dibatasi.”</p>
+            <span class="badge">Pasien Hipertensi</span>
+          </div>
+          <div class="card">
+            <h3>Kirim Testimoni</h3>
+            <div class="form-grid">
+              <div class="form-group full"><label>Testimoni</label><textarea placeholder="Tulis pengalaman menggunakan SIMAZI"></textarea></div>
+              <div class="full"><button class="btn green">Kirim Testimoni</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const titles = {
+      dashboard: 'Dasbor SIMAZI',
+      registrasi: 'Profil Pengguna',
+      assessment: 'Assessment Gizi',
+      diagnosis: 'Diagnosis Masalah Gizi',
+      intervensi: 'Intervensi Gizi',
+      monitoring: 'Monitoring & Laporan',
+      rujukan: 'Rujukan Pasien',
+      chat: 'Chat Pasien dan Ahli Gizi',
+      mandiri: 'Gizi Mandiri',
+      analitik: 'Analisis Pengguna Aplikasi',
+      testimoni: 'Testimoni Pengguna'
+    };
+
+    function showSection(id, button) {
+      document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      if (button) button.classList.add('active');
+      document.getElementById('pageTitle').textContent = titles[id] || 'SIMAZI';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateRoleView() {
+      const role = document.getElementById('roleSelect').value;
+      const badge = document.getElementById('roleBadge');
+      const isAG = role === 'ag';
+      badge.textContent = isAG ? 'Mode Ahli Gizi' : 'Mode Pasien';
+
+      const dashboardAG = document.getElementById('dashboardAG');
+      const dashboardPasien = document.getElementById('dashboardPasien');
+      const chatAG = document.getElementById('chatAG');
+      const chatPasien = document.getElementById('chatPasien');
+      const monitoringAG = document.getElementById('monitoringAG');
+      const monitoringPasien = document.getElementById('monitoringPasien');
+      const profilAG = document.getElementById('profilAG');
+      const profilPasien = document.getElementById('profilPasien');
+      if (dashboardAG && dashboardPasien) {
+        dashboardAG.style.display = isAG ? 'block' : 'none';
+        dashboardPasien.style.display = isAG ? 'none' : 'block';
+      }
+      if (chatAG && chatPasien) {
+        chatAG.style.display = isAG ? 'block' : 'none';
+        chatPasien.style.display = isAG ? 'none' : 'block';
+      }
+      if (monitoringAG && monitoringPasien) {
+        monitoringAG.style.display = isAG ? 'block' : 'none';
+        monitoringPasien.style.display = isAG ? 'none' : 'block';
+      }
+      if (profilAG && profilPasien) {
+        profilAG.style.display = isAG ? 'block' : 'none';
+        profilPasien.style.display = isAG ? 'none' : 'block';
+      }
+
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.style.display = 'flex');
+      const navButtons = document.querySelectorAll('.nav-btn');
+
+      if (isAG) {
+        // Ahli gizi mendapat fitur lengkap untuk asuhan gizi profesional.
+        navButtons[8].style.display = 'none';
+      } else {
+        // Pasien mendapat fitur yang relevan untuk pencatatan, edukasi, monitoring, dan komunikasi.
+        navButtons[2].style.display = 'none';
+        navButtons[3].style.display = 'none';
+        navButtons[6].style.display = 'none';
+        navButtons[8].style.display = 'flex';
+        navButtons[9].style.display = 'none';
+      }
+
+      showSection('dashboard', document.querySelectorAll('.nav-btn')[0]);
+    }
+
+    function switchAuth(type) {
+      document.getElementById('loginTab').classList.toggle('active', type === 'login');
+      document.getElementById('registerTab').classList.toggle('active', type === 'register');
+      document.getElementById('loginForm').classList.toggle('active', type === 'login');
+      document.getElementById('registerForm').classList.toggle('active', type === 'register');
+    }
+
+    function enterApp(role) {
+      document.getElementById('authScreen').style.display = 'none';
+      document.getElementById('appShell').style.display = 'grid';
+      document.getElementById('roleSelect').value = role;
+      updateRoleView();
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+      const role = document.getElementById('loginRole').value;
+      enterApp(role);
+    }
+
+    function handleRegister(event) {
+      event.preventDefault();
+      const role = document.getElementById('registerRole').value;
+      enterApp(role);
+    }
+
+    function logout() {
+      document.getElementById('appShell').style.display = 'none';
+      document.getElementById('authScreen').style.display = 'grid';
+      switchAuth('login');
+    }
+
+    function hitungIMT() {
+      const bb = Number(document.getElementById('bb').value);
+      const tbCm = Number(document.getElementById('tb').value);
+      const tb = tbCm / 100;
+      if (!bb || !tb) {
+        document.getElementById('imtResult').innerHTML = 'Mohon isi berat badan dan tinggi badan dengan benar.';
+        return;
+      }
+      const imt = bb / (tb * tb);
+      let status = 'Normal';
+      if (imt < 18.5) status = 'Kurus';
+      else if (imt >= 25 && imt < 30) status = 'Overweight';
+      else if (imt >= 30) status = 'Obesitas';
+      const bbIdealMin = 18.5 * tb * tb;
+      const bbIdealMax = 24.9 * tb * tb;
+      document.getElementById('imtResult').innerHTML = `
+        <b>IMT:</b> ${imt.toFixed(1)} kg/m²<br>
+        <b>Status gizi:</b> ${status}<br>
+        <b>Rentang BB ideal estimasi:</b> ${bbIdealMin.toFixed(1)} - ${bbIdealMax.toFixed(1)} kg
+      `;
+    }
+
+    function hitungKebutuhan() {
+      const bb = Number(document.getElementById('bbAcuan').value);
+      const kondisi = document.getElementById('kondisi').value;
+      if (!bb) return;
+      let kalori = bb * 30;
+      let protein = bb * 0.8;
+      let natrium = '≤ 2000 mg/hari';
+      let kalium = 'Disesuaikan hasil lab';
+      let fosfor = '800–1000 mg/hari';
+      let cairan = 'Disesuaikan kondisi klinis';
+
+      if (kondisi === 'hipertensi') {
+        protein = bb * 1;
+        fosfor = 'Sesuai kebutuhan umum';
+        cairan = '± 30 ml/kg BB atau sesuai klinis';
+      }
+      if (kondisi === 'asamurat') {
+        protein = bb * 0.9;
+        natrium = 'Batasi makanan tinggi garam';
+        fosfor = 'Sesuai kebutuhan umum';
+        cairan = 'Cukup, kecuali ada pembatasan medis';
+      }
+
+      document.getElementById('giziResult').innerHTML = `
+        <b>Kalori:</b> ${kalori.toFixed(0)} kkal/hari<br>
+        <b>Protein:</b> ${protein.toFixed(1)} gram/hari<br>
+        <b>Natrium:</b> ${natrium}<br>
+        <b>Kalium:</b> ${kalium}<br>
+        <b>Fosfor:</b> ${fosfor}<br>
+        <b>Cairan:</b> ${cairan}<br>
+        <small>Catatan: hasil ini prototipe dan perlu validasi oleh ahli gizi berdasarkan pedoman klinis.</small>
+      `;
+    }
+
+    function sendChat() {
+      sendChatRole(document.getElementById('roleSelect').value);
+    }
+
+    function sendChatRole(role) {
+      const isAG = role === 'ag';
+      const input = document.getElementById(isAG ? 'chatInputAG' : 'chatInputPasien');
+      const box = document.getElementById(isAG ? 'chatBoxAG' : 'chatBoxPasien');
+      const text = input.value.trim();
+      if (!text) return;
+      const div = document.createElement('div');
+      div.className = isAG ? 'message ag' : 'message patient';
+      div.textContent = text;
+      box.appendChild(div);
+      input.value = '';
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function isiTemplateChat(text) {
+      const role = document.getElementById('roleSelect').value;
+      const input = document.getElementById(role === 'ag' ? 'chatInputAG' : 'chatInputPasien');
+      input.value = text;
+      input.focus();
+    }
+  </script>
+</body>
+</html>
