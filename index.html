@@ -420,7 +420,7 @@
         <form id="registerForm" class="auth-form" onsubmit="handleRegister(event)">
           <h3>Register SIMAZI</h3>
           <div class="form-group"><label>Daftar sebagai</label><select id="registerRole"><option value="pasien">Pasien</option><option value="ag">Ahli Gizi</option></select></div>
-          <div class="form-group"><label>Nama Lengkap</label><input id="registerName" required placeholder="Contoh: Siti Aminah" /></div>
+          <div class="form-group"><label>Nama Lengkap</label><input id="registerName" required placeholder="Contoh: Destine Ariyen" /></div>
           <div class="form-group"><label>Email / Nomor HP</label><input required placeholder="email atau nomor WhatsApp" /></div>
           <div class="form-group"><label>Password</label><input required type="password" placeholder="Buat password" /></div>
           <button class="btn" type="submit">Daftar Sekarang</button>
@@ -498,9 +498,9 @@
             <div class="table-wrap">
               <table>
                 <tr><th>Pasien</th><th>Penyakit</th><th>Masalah Utama</th><th>Tindak Lanjut</th></tr>
-                <tr><td>Budi</td><td>Ginjal</td><td>Kreatinin tinggi, edema ringan</td><td>Evaluasi natrium, cairan, dan protein</td></tr>
-                <tr><td>Siti</td><td>Asam Urat</td><td>Nyeri sendi, asupan purin tinggi</td><td>Batasi jeroan, kaldu pekat, dan seafood tertentu</td></tr>
-                <tr><td>Andi</td><td>Hipertensi</td><td>Asupan garam tinggi</td><td>Edukasi diet rendah garam dan pantau tekanan darah</td></tr>
+                <tr><td>Carmen</td><td>Ginjal</td><td>Kreatinin tinggi, edema ringan</td><td>Evaluasi natrium, cairan, dan protein</td></tr>
+                <tr><td>Asahi</td><td>Asam Urat</td><td>Nyeri sendi, asupan purin tinggi</td><td>Batasi jeroan, kaldu pekat, dan seafood tertentu</td></tr>
+                <tr><td>Mikasa</td><td>Hipertensi</td><td>Asupan garam tinggi</td><td>Edukasi diet rendah garam dan pantau tekanan darah</td></tr>
               </table>
             </div>
           </div>
@@ -546,7 +546,7 @@
             <p>Bagian ini khusus untuk data profesional ahli gizi. Data penyakit, alergi, dan riwayat kesehatan tidak ditampilkan karena itu termasuk data pasien.</p>
             <div class="form-grid">
               <div class="form-group"><label>Role Pengguna</label><select disabled><option>Ahli Gizi</option></select></div>
-              <div class="form-group"><label>Nama Lengkap Ahli Gizi</label><input placeholder="Contoh: Ns. Rina, S.Gz., RD" /></div>
+              <div class="form-group"><label>Nama Lengkap Ahli Gizi</label><input placeholder="Contoh: Ns. Destine, S.Gz., RD" /></div>
               <div class="form-group"><label>Email / Nomor HP</label><input placeholder="email atau nomor WhatsApp" /></div>
               <div class="form-group"><label>Nomor STR / SIP</label><input placeholder="Nomor registrasi profesi" /></div>
               <div class="form-group"><label>Tempat Praktik / Fasilitas Layanan</label><input placeholder="RS / Puskesmas / Klinik / Praktik Mandiri" /></div>
@@ -564,7 +564,7 @@
             <p>Bagian ini khusus untuk identitas pasien dan data kesehatan dasar yang dibutuhkan dalam asuhan gizi.</p>
             <div class="form-grid">
               <div class="form-group"><label>Role Pengguna</label><select disabled><option>Pasien</option></select></div>
-              <div class="form-group"><label>Nama Lengkap Pasien</label><input placeholder="Contoh: Siti Aminah" /></div>
+              <div class="form-group"><label>Nama Lengkap Pasien</label><input placeholder="Contoh: Destine Ariyen" /></div>
               <div class="form-group"><label>Email / Nomor HP</label><input placeholder="email atau nomor WhatsApp" /></div>
               <div class="form-group"><label>Usia</label><input type="number" placeholder="tahun" /></div>
               <div class="form-group"><label>Jenis Kelamin</label><select><option>Perempuan</option><option>Laki-laki</option></select></div>
@@ -666,9 +666,9 @@
               <table>
                 <thead><tr><th>Pasien</th><th>BB</th><th>Lab</th><th>Fisik Klinis</th><th>Kepatuhan Makan</th><th>Catatan</th></tr></thead>
                 <tbody>
-                  <tr><td>Budi</td><td>Turun 1 kg</td><td>Kreatinin tinggi</td><td>Edema ringan</td><td>82%</td><td>Kurangi natrium dan pantau cairan.</td></tr>
-                  <tr><td>Siti</td><td>Stabil</td><td>Asam urat tinggi</td><td>Nyeri sendi</td><td>74%</td><td>Hindari jeroan dan kaldu pekat.</td></tr>
-                  <tr><td>Andi</td><td>Naik 0,5 kg</td><td>Natrium perlu dipantau</td><td>Tekanan darah tinggi</td><td>68%</td><td>Edukasi rendah garam dan evaluasi kebiasaan makan.</td></tr>
+                  <tr><td>Carmen</td><td>Turun 1 kg</td><td>Kreatinin tinggi</td><td>Edema ringan</td><td>82%</td><td>Kurangi natrium dan pantau cairan.</td></tr>
+                  <tr><td>Asahi</td><td>Stabil</td><td>Asam urat tinggi</td><td>Nyeri sendi</td><td>74%</td><td>Hindari jeroan dan kaldu pekat.</td></tr>
+                  <tr><td>Mikasa</td><td>Naik 0,5 kg</td><td>Natrium perlu dipantau</td><td>Tekanan darah tinggi</td><td>68%</td><td>Edukasi rendah garam dan evaluasi kebiasaan makan.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -681,8 +681,8 @@
               <div class="table-wrap">
                 <table>
                   <tr><th>Pasien</th><th>Laporan Terakhir</th><th>Evaluasi</th></tr>
-                  <tr><td>Budi</td><td>Nasi, telur, sayur bening</td><td>Baik, tetap batasi garam.</td></tr>
-                  <tr><td>Siti</td><td>Soto dengan kaldu pekat</td><td>Perlu edukasi pembatasan purin.</td></tr>
+                  <tr><td>Carmen</td><td>Nasi, telur, sayur bening</td><td>Baik, tetap batasi garam.</td></tr>
+                  <tr><td>Mikasa</td><td>Soto dengan kaldu pekat</td><td>Perlu edukasi pembatasan purin.</td></tr>
                 </table>
               </div>
             </div>
@@ -768,7 +768,7 @@
               </div>
             </div>
             <div class="chat-box" id="chatBoxAG">
-              <div class="message ag">Halo Budi, apakah hari ini sudah menimbang berat badan dan mencatat makan pagi?</div>
+              <div class="message ag">Halo Destine, apakah hari ini sudah menimbang berat badan dan mencatat makan pagi?</div>
               <div class="message patient">Sudah Bu, BB saya 60 kg. Sarapan nasi sedikit, telur, dan sayur bening.</div>
               <div class="message ag">Baik, terima kasih. Untuk siang nanti tetap batasi garam dan catat jumlah minum ya.</div>
               <div class="message patient">Baik Bu, nanti saya isi laporan makan siang.</div>
@@ -1022,7 +1022,7 @@
         <b>Kalium:</b> ${kalium}<br>
         <b>Fosfor:</b> ${fosfor}<br>
         <b>Cairan:</b> ${cairan}<br>
-        <small>Catatan: hasil ini prototipe dan perlu validasi oleh ahli gizi berdasarkan pedoman klinis.</small>
+        <small>Catatan: hasil ini perlu validasi oleh ahli gizi berdasarkan pedoman klinis.</small>
       `;
     }
 
